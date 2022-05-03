@@ -107,8 +107,8 @@ export default {
     },
     // 判断底部[全选]是否勾选
     isAllChecked() {
-      // 遍历数组里面元素,只要全部元素isChecked属性都为1===>真 true
-      // 只要有一个不是1===>假 false
+      // 遍历数组里面元素,只要全部元素isChecked属性都为1===>真(true)
+      // 只要有一个不是1===>假(false)
       return this.cartInfoList.every((item) => item.isChecked == 1);
     },
   },
