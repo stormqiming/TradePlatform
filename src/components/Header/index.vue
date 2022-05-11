@@ -6,16 +6,14 @@
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
           <!-- 用户登录了，显示用户信息与退出登录 ||用户没有登录，显示的是登录与注册-->
-          <p v-if="!userInfo">
+          <p v-if="!userName">
             <span>请</span>
             <!-- 声明式导航务必要有to属性 -->
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
           </p>
-          <p v-else>
-            <!-- <a>{{ userInfo.name }}</a> -->
-            <a class="register" @click="logout">退出登录</a>
-          </p>
+          <p v-else>{{ userName }}</p>
+          <a class="register" @click="logout">退出登录</a>
         </div>
         <div class="typeList">
           <router-link to="/center/myorder">我的订单</router-link>
@@ -103,12 +101,30 @@ export default {
         this.$route.push(location);
       }
     },
+    // 退出登录
+    async logout() {
+      // 退出登录需要做的事情：
+      // 1.发请求，通知服务器退出登录
+      // 2.清除项目当中的数据
+      try {
+        // 如果退出成功
+        await this.$store.dispatch("userLogOut");
+        // 回到首页
+        this.$router.push("/home");
+      } catch (error) {}
+    },
   },
   mounted() {
     // 通过全局事件总线，清除关键字
     this.$bus.$on("clear", () => {
       this.keyword = "";
     });
+  },
+  computed: {
+    // 用户名信息
+    userName() {
+      return this.$store.state.user.userInfo.name;
+    },
   },
 };
 </script>

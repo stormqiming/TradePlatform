@@ -6,6 +6,14 @@
     import Detail from '@/pages/Detail/index.vue'
     import AddCartSuccess from '@/pages/AddCartSuccess/index.vue'
     import ShopCart from '@/pages/ShopCart/index.vue'
+    import Trade from '@/pages/Trade/index.vue'
+    import Pay from '@/pages/Pay/index.vue'
+    import PaySuccess from '@/pages/PaySuccess/index.vue'
+    import Center from '@/pages/Center/index.vue'
+    // 引入二级路由组件
+    import MyOrder from '@/pages/Center/myOrder/index.vue'
+    import GroupOrder from '@/pages/Center/groupOrder/index.vue'
+
     // 路由配置信息
     export default [
         // 重定向：在项目跑起来的时候，访问'/'，立马让他重定向到首页
@@ -31,5 +39,21 @@
         { path: '/register', component: Register, meta: { show: false } },
         { path: '/detail/:skuId', component: Detail, meta: { show: true } },
         { path: '/addcartsuccess', component: AddCartSuccess, meta: { show: true }, name: 'addcartsuccess' },
-        { path: '/shopcart', component: ShopCart, meta: { show: true } }
+        { path: '/shopcart', component: ShopCart, meta: { show: true } },
+        { path: '/trade', component: Trade, meta: { show: true } },
+        { path: '/pay', component: Pay, meta: { show: true } },
+        { path: '/paysuccess', component: PaySuccess, meta: { show: true } },
+        {
+            path: '/center',
+            component: Center,
+            meta: { show: true },
+            // 二级路由组件
+            children: [{
+                    path: 'myorder',
+                    component: MyOrder
+                },
+                { path: 'grouporder', component: GroupOrder },
+                { path: '/center', redirect: '/center/myorder' }
+            ]
+        }
     ]
