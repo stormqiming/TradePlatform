@@ -1,6 +1,6 @@
     // 引入路由组件
-    import Home from '@/pages/Home/index.vue'
-    import Search from '@/pages/Search/index.vue'
+    // import Home from '@/pages/Home/index.vue'
+    // import Search from '@/pages/Search/index.vue'
     import Login from '@/pages/Login/index.vue'
     import Register from '@/pages/Register/index.vue'
     import Detail from '@/pages/Detail/index.vue'
@@ -18,10 +18,17 @@
     export default [
         // 重定向：在项目跑起来的时候，访问'/'，立马让他重定向到首页
         { path: '/', redirect: '/home' },
-        { path: '/home', component: Home, meta: { show: true } },
+        {
+            path: '/home',
+            // 路由懒加载
+            component: () =>
+                import ('@/pages/Home/index.vue'),
+            meta: { show: true }
+        },
         {
             path: '/search/:keyword?',
-            component: Search,
+            component: () =>
+                import ('@/pages/Search/index.vue'),
             meta: { show: true },
             name: 'search',
             // 路由组件能不能传递props数据？
@@ -40,8 +47,33 @@
         { path: '/detail/:skuId', component: Detail, meta: { show: true } },
         { path: '/addcartsuccess', component: AddCartSuccess, meta: { show: true }, name: 'addcartsuccess' },
         { path: '/shopcart', component: ShopCart, meta: { show: true } },
-        { path: '/trade', component: Trade, meta: { show: true } },
-        { path: '/pay', component: Pay, meta: { show: true } },
+        {
+            path: '/trade',
+            component: Trade,
+            meta: { show: true },
+            // 路由独享守卫
+            beforeEnter: (to, from, next) => {
+                // 去交易页面，必须从购物车而来
+                if (from.path == '/shopcart') {
+                    next();
+                } else {
+                    // 其他的路由组件而来，停留在当前
+                    next(false);
+                }
+            }
+        },
+        {
+            path: '/pay',
+            component: Pay,
+            meta: { show: true },
+            beforeEnter: (to, from, next) => {
+                if (from.path == '/trade') {
+                    next();
+                } else {
+                    next(false);
+                }
+            }
+        },
         { path: '/paysuccess', component: PaySuccess, meta: { show: true } },
         {
             path: '/center',

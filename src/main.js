@@ -21,6 +21,17 @@ import 'swiper/css/swiper.css'
 // 统一接收接口api文件夹里面全部请求函数
 // 统一引入
 import * as API from '@/api/index.js'
+// 引入插件
+import VueLazyload from 'vue-lazyload'
+import dog from '@/assets/images/1.gif'
+
+Vue.use(VueLazyload, {
+    // 图片懒加载默认的图片
+    loading: dog,
+})
+
+// 引入表单校验插件
+import '@/plugins/validate.js'
 
 // ElementUI注册组件的时候,还有一种写法,挂在原型上
 Vue.prototype.$msgbox = MessageBox;
